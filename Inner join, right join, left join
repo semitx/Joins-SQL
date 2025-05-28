@@ -1,0 +1,162 @@
+--Using my own databases with two types of joins per database
+
+ Escuela
+🔹 INNER JOIN
+
+1. Materia con su id de horario y el profesor
+SELECT materia.id, materia.nombre, horario.id AS id_horario, profesor.nombre AS profesor
+FROM materia
+INNER JOIN horario ON materia.id_horario = horario.id
+INNER JOIN profesor ON materia.id_profesor = profesor.id;
+
+2. Muestra el profesor y el aula donde da clase
+SELECT profesor.nombre, aula.nombre AS aula
+FROM profesor
+INNER JOIN clase ON profesor.id = clase.id_profesor
+INNER JOIN aula ON clase.id_aula = aula.id;
+
+🔹 LEFT JOIN
+
+3. El estudiante y la materia que cursa según el profesor que tiene con el mismo id
+SELECT estudiante.nombre, materia.nombre AS materia, profesor.nombre AS profesor
+FROM estudiante
+LEFT JOIN inscripcion ON estudiante.id = inscripcion.id_estudiante
+LEFT JOIN materia ON inscripcion.id_materia = materia.id
+LEFT JOIN profesor ON materia.id_profesor = profesor.id
+WHERE estudiante.id = profesor.id;
+
+4. Muestra el profesor y el aula donde da clase
+SELECT profesor.nombre, aula.nombre AS aula
+FROM profesor
+LEFT JOIN clase ON profesor.id = clase.id_profesor
+LEFT JOIN aula ON clase.id_aula = aula.id;
+
+🔹 RIGHT JOIN
+
+5. La materia cuyo id es igual al del profesor, cuando el profesor tiene la misma id que el estudiante
+SELECT materia.*
+FROM materia
+RIGHT JOIN profesor ON materia.id = profesor.id
+RIGHT JOIN estudiante ON profesor.id = estudiante.id;
+
+6. Aulas con su hora de inicio y fin
+SELECT aula.nombre, horario.hora_inicio, horario.hora_fin
+FROM aula
+RIGHT JOIN clase ON aula.id = clase.id_aula
+RIGHT JOIN horario ON clase.id_horario = horario.id;
+
+ Liga de fútbol
+
+🔹 INNER JOIN
+
+1. Muestra el jugador con el nombre de su equipo
+SELECT jugador.nombre, equipo.nombre AS equipo
+FROM jugador
+INNER JOIN equipo ON jugador.id_equipo = equipo.id;
+
+2. Muestra el jugador y sus características
+SELECT jugador.nombre, caracteristicas.velocidad, caracteristicas.fuerza
+FROM jugador
+INNER JOIN caracteristicas ON jugador.id = caracteristicas.id_jugador;
+
+🔹 LEFT JOIN
+
+3. Muestra el jugador y el nombre del equipo en que juega
+SELECT jugador.nombre, equipo.nombre AS equipo
+FROM jugador
+LEFT JOIN equipo ON jugador.id_equipo = equipo.id;
+
+4. Muestra el nombre del jugador con los goles y sus asistencias
+SELECT jugador.nombre, estadisticas.goles, estadisticas.asistencias
+FROM jugador
+LEFT JOIN estadisticas ON jugador.id = estadisticas.id_jugador;
+
+🔹 RIGHT JOIN
+
+5. Muestra el jugador con su equipo al que pertenece
+SELECT jugador.nombre, equipo.nombre AS equipo
+FROM equipo
+RIGHT JOIN jugador ON equipo.id = jugador.id_equipo;
+
+6. Muestra la fecha del partido con el equipo local y el visitante
+SELECT partido.fecha, local.nombre AS equipo_local, visitante.nombre AS equipo_visitante
+FROM partido
+RIGHT JOIN equipo AS local ON partido.id_local = local.id
+RIGHT JOIN equipo AS visitante ON partido.id_visitante = visitante.id;
+
+Videojuego
+
+🔹 INNER JOIN
+
+1. Muestra el jugador y el producto que haya comprado
+SELECT jugador.nombre, producto.nombre AS producto
+FROM jugador
+INNER JOIN compra ON jugador.id = compra.id_jugador
+INNER JOIN producto ON compra.id_producto = producto.id;
+
+2. Relaciona el ID de la misión con el logro para que cada misión desbloquee un logro
+SELECT mision.id, mision.nombre, logro.descripcion
+FROM mision
+INNER JOIN logro ON mision.id_logro = logro.id;
+
+🔹 LEFT JOIN
+
+3. Muestra el jugador con el producto que haya comprado
+SELECT jugador.nombre, producto.nombre AS producto
+FROM jugador
+LEFT JOIN compra ON jugador.id = compra.id_jugador
+LEFT JOIN producto ON compra.id_producto = producto.id;
+
+4. Muestra la misión con el logro correspondiente
+SELECT mision.nombre, logro.descripcion
+FROM mision
+LEFT JOIN logro ON mision.id_logro = logro.id;
+
+🔹 RIGHT JOIN
+
+5. Muestra el producto y el jugador que lo haya comprado
+SELECT producto.nombre, jugador.nombre AS jugador
+FROM producto
+RIGHT JOIN compra ON producto.id = compra.id_producto
+RIGHT JOIN jugador ON compra.id_jugador = jugador.id;
+
+6. Muestra la misión y el logro que te da
+SELECT mision.nombre, logro.descripcion
+FROM logro
+RIGHT JOIN mision ON logro.id = mision.id_logro;
+
+Tienda Departamental
+🔹 INNER JOIN
+
+1. Muestra el producto con su categoría
+SELECT producto.nombre, categoria.nombre AS categoria
+FROM producto
+INNER JOIN categoria ON producto.id_categoria = categoria.id;
+
+2. Muestra la venta con el cliente correspondiente, el nombre de empleado y la fecha
+SELECT venta.id, cliente.nombre AS cliente, empleado.nombre AS empleado, venta.fecha
+FROM venta
+INNER JOIN cliente ON venta.id_cliente = cliente.id
+INNER JOIN empleado ON venta.id_empleado = empleado.id;
+
+🔹 LEFT JOIN
+3. Muestra el producto y su categoría
+SELECT producto.nombre, categoria.nombre AS categoria
+FROM producto
+LEFT JOIN categoria ON producto.id_categoria = categoria.id;
+
+4. Muestra la fecha de venta con el cliente correspondiente
+SELECT venta.fecha, cliente.nombre AS cliente
+FROM venta
+LEFT JOIN cliente ON venta.id_cliente = cliente.id;
+
+🔹 RIGHT JOIN
+5. Muestra el producto con su categoría
+SELECT producto.nombre, categoria.nombre AS categoria
+FROM categoria
+RIGHT JOIN producto ON producto.id_categoria = categoria.id;
+
+6. Muestra el id de la venta con el empleado que la haya realizado
+SELECT venta.id, empleado.nombre AS empleado
+FROM empleado
+RIGHT JOIN venta ON empleado.id = venta.id_empleado;
