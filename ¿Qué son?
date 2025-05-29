@@ -1,0 +1,96 @@
+Actividad 18
+1. ¿Qué son y para qué nos sirven los JOINS?
+Los JOINS en SQL sirven para combinar datos de dos o más tablas cuando
+tienen algo en común. Nos ayudan a hacer consultas más completas y evitar
+información duplicada en diferentes tablas.
+2. INNER JOIN
+El INNER JOIN es el más común, devuelve sólo las filas que tienen
+coincidencias en ambas tablas. Si no hay coincidencia, esa fila no aparece en
+el resultado.
+Usos:
+● Cuando solo queremos los registros que tienen relación en ambas
+tablas.
+● Ejemplo: listar solo los clientes que han realizado compras.
+Sintaxis:
+SELECT tabla1.columna, tabla2.columna
+FROM tabla1
+INNER JOIN tabla2 ON tabla1.id = tabla2.id;
+SELECT tabla1.columna, tabla2.columna
+FROM tabla1
+INNER JOIN tabla2 ON tabla1.id = tabla2.id;
+3. LEFT JOIN
+El LEFT JOIN devuelve todos los registros de la tabla de la izquierda y solo los
+que coinciden de la tabla derecha. Si no hay coincidencia, las columnas de la
+tabla derecha tendrán valores nulos.
+Usos:
+● Cuando queremos mostrar todos los registros de una tabla, aunque no
+tengan coincidencia en la otra.
+● Ejemplo: listar todos los clientes y sus compras, incluso si algunos
+clientes no han comprado nada.
+Sintaxis:
+SELECT tabla1.columna, tabla2.columna
+FROM tabla1
+LEFT JOIN tabla2 ON tabla1.id = tabla2.id;
+4. RIGHT JOIN
+El RIGHT JOIN funciona igual que el LEFT JOIN, pero al revés. Devuelve todos
+los registros de la tabla derecha y solo los que coinciden de la tabla izquierda.
+Usos:
+● Cuando queremos mostrar todos los registros de una tabla secundaria,
+aunque no tengan relación con la principal.
+● Ejemplo: listar todas las compras y los clientes asociados, aunque
+algunas compras no tengan un cliente registrado.
+Sintaxis:
+SELECT tabla1.columna, tabla2.columna
+FROM tabla1
+RIGHT JOIN tabla2 ON tabla1.id = tabla2.id;
+5. FULL JOIN
+El FULL JOIN devuelve todos los registros de ambas tablas. Si hay
+coincidencia, los muestra juntos; si no, llena con valores nulos donde falte
+información.
+Usos:
+● Cuando necesitamos todos los datos de ambas tablas, sin importar si
+coinciden o no.
+● Ejemplo: listar todos los clientes y todas las compras, aunque algunos
+clientes no hayan comprado y algunas compras no tengan cliente
+asignado.
+Sintaxis:
+SELECT tabla1.columna, tabla2.columna
+FROM tabla1
+FULL JOIN tabla2 ON tabla1.id = tabla2.id;
+6. Diferencia entre UNION y UNION ALL
+UNION y UNION ALL se usan para combinar los resultados de dos consultas.
+● UNION elimina los duplicados y solo muestra valores únicos.
+● UNION ALL muestra todos los resultados, incluyendo los duplicados.
+Usos:
+● Para unir datos de tablas con la misma estructura.
+● Ejemplo: combinar listas de clientes de dos sucursales distintas.
+Sintaxis:
+SELECT columna FROM tabla1
+UNION
+SELECT columna FROM tabla2;
+SELECT columna FROM tabla1
+UNION ALL
+SELECT columna FROM tabla2;
+7. CROSS JOIN
+El CROSS JOIN combina todas las filas de una tabla con todas las filas de
+otra, generando un producto cartesiano.
+Usos:
+● Para generar todas las combinaciones posibles entre dos conjuntos de
+datos.
+● Ejemplo: combinar todos los productos con todas las promociones
+disponibles.
+Sintaxis:
+SELECT tabla1.columna, tabla2.columna
+FROM tabla1
+CROSS JOIN tabla2;
+8. SELF JOIN
+El SELF JOIN es cuando una tabla se une consigo misma. Se usa para
+comparar registros dentro de la misma tabla.
+Usos:
+● Para encontrar relaciones jerárquicas dentro de una tabla.
+● Ejemplo: listar empleados y sus respectivos jefes en una estructura de
+empresa.
+Sintaxis:
+SELECT A.columna, B.columna
+FROM tabla A
+INNER JOIN tabla B ON A.id_relacion = B.id;
