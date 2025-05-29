@@ -1,0 +1,70 @@
+-- 1. Títulos de películas con la categoría
+SELECT f.title, c.name 
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id;
+
+-- 2. Películas con el idioma hablado, mostrando NULL si no tienen idioma
+SELECT f.title, COALESCE(l.name, 'NULL') AS language_name
+FROM film f
+LEFT JOIN language l ON f.language_id = l.language_id;
+
+-- 3. Categorías con número de películas, mostrando 0 si no tienen películas
+SELECT c.name, COUNT(fc.film_id) AS num_peliculas
+FROM category c
+LEFT JOIN film_category fc ON c.category_id = fc.category_id
+GROUP BY c.name;
+
+-- 4. Clientes con la cantidad total pagada, mostrando 0 si no han pagado
+SELECT c.customer_id, c.first_name, c.last_name, COALESCE(SUM(p.amount), 0) AS total_pagado
+FROM customer c
+LEFT JOIN payment p ON c.customer_id = p.customer_id
+GROUP BY c.customer_id;
+
+-- 5. Direcciones con el ID de la tienda si hay una tienda en esa dirección
+SELECT a.address, COALESCE(s.store_id, 'NULL') AS store_id
+FROM address a
+LEFT JOIN store s ON a.address_id = s.address_id;
+
+-- 6. Fecha de renta y título de la película rentada
+SELECT r.rental_date, f.title
+FROM rental r
+JOIN inventory i ON r.inventory_id = i.inventory_id
+JOIN film f ON i.film_id = f.film_id;
+
+-- 7. Empleados y la tienda en la que trabajan, mostrando NULL si no tienen tienda asignada
+SELECT s.staff_id, s.first_name, s.last_name, COALESCE(s.store_id, 'NULL') AS store_id
+FROM staff s;
+
+-- 8. Ciudades con la cantidad de clientes que viven en ellas, mostrando 0 si no hay clientes
+SELECT ci.city, COUNT(c.customer_id) AS num_clientes
+FROM city ci
+LEFT JOIN address a ON ci.city_id = a.city_id
+LEFT JOIN customer c ON a.address_id = c.address_id
+GROUP BY ci.city;
+
+-- 9. Clientes junto con las películas que han rentado
+SELECT c.customer_id, c.first_name, c.last_name, f.title
+FROM rental r
+JOIN customer c ON r.customer_id = c.customer_id
+JOIN inventory i ON r.inventory_id = i.inventory_id
+JOIN film f ON i.film_id = f.film_id;
+
+-- 10. Películas y cuántas veces han sido rentadas, incluyendo las que nunca se han rentado
+SELECT f.title, COUNT(r.rental_id) AS veces_rentada
+FROM film f
+LEFT JOIN inventory i ON f.film_id = i.film_id
+LEFT JOIN rental r ON i.inventory_id = r.inventory_id
+GROUP BY f.title;
+
+-- 11. Actores junto con la cantidad de películas en las que han actuado, mostrando 0 si no han actuado
+SELECT a.actor_id, a.first_name, a.last_name, COUNT(fa.film_id) AS num_peliculas
+FROM actor a
+LEFT JOIN film_actor fa ON a.actor_id = fa.actor_id
+GROUP BY a.actor_id;
+
+-- 12. Tiendas junto con la cantidad de empleados, incluso si no tienen empleados asignados
+SELECT s.store_id, COUNT(st.staff_id) AS num_empleados
+FROM store s
+LEFT JOIN staff st ON s.store_id = st.store_id
+GROUP BY s.store_id;
